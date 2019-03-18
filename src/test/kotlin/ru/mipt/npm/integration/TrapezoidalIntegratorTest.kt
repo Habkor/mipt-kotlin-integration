@@ -11,7 +11,7 @@ class TrapezoidalIntegratorTest {
     fun testSin() {
         val integrator = TrapezoidalIntegrator()
         val res = integrator.integrateWithInfo(0.0, PI) { sin(it) }
-        println("The result of sin integration is ${res}")
+        println("The result of sin integration is $res")
         assertEquals(2.0, res.result, 1e-4)
     }
 }
