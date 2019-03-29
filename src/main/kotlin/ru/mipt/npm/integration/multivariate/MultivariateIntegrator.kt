@@ -10,9 +10,9 @@ interface IntegrationKey<T : Any>
 /**
  * A formulation of integration problem
  */
-class IntegrationProblem {
-    private val map = HashMap<IntegrationKey<*>, Any>()
+class IntegrationProblem private constructor(private val map: MutableMap<IntegrationKey<*>, Any>) {
 
+    constructor() : this(HashMap<IntegrationKey<*>, Any>())
 
     fun <T : Any> get(key: IntegrationKey<T>, type: KClass<T>): T? = type.java.cast(map[key])
 
@@ -25,29 +25,48 @@ class IntegrationProblem {
             map[key] = obj
         }
     }
+
+    operator fun plus(problem: IntegrationProblem): IntegrationProblem {
+        val map = this.map + problem.map
+        return IntegrationProblem(map.toMutableMap())
+    }
+
+    /**
+     * Copy this problem applying transformation
+     */
+    fun copy(block: IntegrationProblem.() -> Unit = {}) =
+        IntegrationProblem(HashMap(map)).apply(block)
 }
 
 /**
  * A type alias for multivariate function
+ * TODO replace by dimension checked version
  */
 typealias MultivariateFunction = (DoubleArray) -> Double
 
 object ObjectiveFunction : IntegrationKey<MultivariateFunction>
 
-var IntegrationProblem.function
-    get() = this[ObjectiveFunction]
-    set(value) {
-        this[ObjectiveFunction] = value
-    }
+val IntegrationProblem.function get() = this[ObjectiveFunction]
 
-class HyperVolume(val ranges: List<ClosedFloatingPointRange<Double>>) {
+
+class HyperBounds(val ranges: List<ClosedFloatingPointRange<Double>>) {
 
     val volume get() = ranges.map { it.endInclusive - it.start }.fold(1.0) { left, right -> left * right }
 
-    companion object : IntegrationKey<HyperVolume>
+    val dimension get() = ranges.size
+
+    companion object : IntegrationKey<HyperBounds>
 }
 
-operator fun HyperVolume.get(index: Int) = ranges[index]
+@Suppress("FunctionName")
+fun HyperBounds(vararg ranges: ClosedFloatingPointRange<Double>) = HyperBounds(ranges.asList())
+
+operator fun HyperBounds.get(index: Int) = ranges[index]
+
+
+object IntegrationResult : IntegrationKey<Double>
+
+val IntegrationProblem.result get() = this[IntegrationResult]
 
 interface MultivariateIntegrator {
     fun integrate(problem: IntegrationProblem): IntegrationProblem
