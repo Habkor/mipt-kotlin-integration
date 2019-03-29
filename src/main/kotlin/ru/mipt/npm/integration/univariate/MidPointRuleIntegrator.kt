@@ -1,10 +1,10 @@
-package ru.mipt.npm.integration
+package ru.mipt.npm.integration.univariate
 
 class MidPointRuleIntegrator(
-        relTol: Double = DEFAULT_REL_TOL,
-        absTol: Double = DEFAULT_ABS_TOL,
-        iniStepsNum: Int = DEFAULT_INITIAL_STEPS_NUM,
-        maxIterNum: Int = DEFAULT_MAX_ITER_NUM
+    relTol: Double = DEFAULT_REL_TOL,
+    absTol: Double = DEFAULT_ABS_TOL,
+    iniStepsNum: Int = DEFAULT_INITIAL_STEPS_NUM,
+    maxIterNum: Int = DEFAULT_MAX_ITER_NUM
 ) : NewtonCotesIntegrator(relTol, absTol, iniStepsNum, maxIterNum) {
 
     override fun calcFirstIterationIntegral(

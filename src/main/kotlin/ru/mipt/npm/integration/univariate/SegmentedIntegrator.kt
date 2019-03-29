@@ -1,4 +1,4 @@
-package ru.mipt.npm.integration
+package ru.mipt.npm.integration.univariate
 
 /**
  * An integrator that allows to split integration region into subregions and integrate them separately

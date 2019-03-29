@@ -2,6 +2,7 @@ package ru.mipt.npm.integration
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import ru.mipt.npm.integration.univariate.MidPointRuleIntegrator
 import kotlin.math.PI
 import kotlin.math.sin
 

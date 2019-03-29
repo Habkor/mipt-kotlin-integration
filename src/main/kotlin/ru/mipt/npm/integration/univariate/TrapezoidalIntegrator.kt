@@ -1,4 +1,4 @@
-package ru.mipt.npm.integration
+package ru.mipt.npm.integration.univariate
 
 class TrapezoidalIntegrator(relTol: Double = DEFAULT_REL_TOL,
                             absTol: Double = DEFAULT_ABS_TOL,

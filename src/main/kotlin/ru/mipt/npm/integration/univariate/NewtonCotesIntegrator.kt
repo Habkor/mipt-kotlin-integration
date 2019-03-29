@@ -1,4 +1,4 @@
-package ru.mipt.npm.integration
+package ru.mipt.npm.integration.univariate
 
 import kotlin.math.abs
 
